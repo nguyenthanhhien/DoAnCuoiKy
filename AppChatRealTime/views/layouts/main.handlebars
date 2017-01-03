@@ -42,9 +42,14 @@
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         <a href="" data-toggle="dropdown">
-                            <img class="profile-pic animated" src="./img/avatar.jpg" alt="">
+                            <img class="profile-pic animated" src="./img/avatar.jpg" ng-click="changeavatar" alt="">
                         </a>
-                        <h4 class="m-0">Nguyễn Anh Huy</h4>
+    {{#if user.local.name}}
+                 <h4 class="m-0">{{user.local.name}}</h4>
+    {{else}}
+                <h4 class="m-0">{{user.facebook.name}}</h4>
+    {{/if}}
+                       
                     </div>
                 </div>
 

@@ -7,13 +7,14 @@ var router = express.Router();
 //});
 
 router.get('/login', function(req, res, next) {
-  res.render('login', {layout:false, message: req.flash('loginMessage')});
+  res.render('login', {layout:false, message: req.flash('loginMessage'),messagesignup: req.flash('signupMessage')});
 });
 
 
 router.get('/', isLoggedIn, function(req, res) {
   res.render('profile', { user: req.user});
 });
+
 
 router.get('/logout', function(req, res) {
   req.logout();

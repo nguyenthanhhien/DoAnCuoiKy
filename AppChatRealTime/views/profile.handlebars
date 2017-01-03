@@ -4,20 +4,15 @@
         <div style="height: 70px; line-height: 70px;">
 
             <div class="badge-container item-left">
-              <img src="./img/avatar.jpg" alt="user" class="avatar-large">
+              <img src={{user.facebook.photos}} alt="user" class="avatar-large">
               <img src="./img/check_offline.png" class="check-online">
             </div>
             <div class="margin-name item-left">
-                
-            {{#if user.local.name}}
+                {{#if user.local.name}}
                 <h3>{{user.local.name}}</h3>
-            {{else}}
+    {{else}}
                 <h3>{{user.facebook.name}}</h3>
-            {{/if}}
-                
-            
-                
-                
+    {{/if}}
             </div>
             <div class="item-right">
                 <img src="./img/phone.png" style="margin-right: 12px;">
