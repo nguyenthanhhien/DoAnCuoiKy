@@ -25,12 +25,15 @@ module.exports = function(passport) {
   function(req, email, password, done) {
     process.nextTick(function() {
       User.findOne({ 'local.email':  email }, function(err, user) {
+          console.log(req.body.firstname);
+          console.log(req.body.lastname);
         if (err)
             return done(err);
         if (user) {
-          return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+          return done(null, false, req.flash('loginMessage', 'That email is already taken.'));
         } else {
           var newUser = new User();
+          newUser.local.name = req.body.lastname + " " + req.body.firstname;
           newUser.local.email = email;
           newUser.local.password = newUser.generateHash(password);
           newUser.save(function(err) {
@@ -50,16 +53,24 @@ module.exports = function(passport) {
   },
   function(req, email, password, done) {
     User.findOne({ 'local.email':  email }, function(err, user) {
+        
       if (err)
           return done(err);
       if (!user)
-          return done(null, false, req.flash('loginMessage', 'No user found.'));
+          {
+              console.log(email);
+              return done(null, false, req.flash('loginMessage', 'No user found.'));
+          }
       if (!user.validPassword(password))
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.'));
+          {
+              console.log(password);
+              return done(null, false,req.flash('loginMessage', 'Wrong password.'));
+          }
+    
       return done(null, user);
     });
   }));
-
+    
   passport.use(new FacebookStrategy({
     clientID: configAuth.facebookAuth.clientID,
     clientSecret: configAuth.facebookAuth.clientSecret,
@@ -139,6 +150,7 @@ module.exports = function(passport) {
             newUser.save(function(err) {
               if (err)
                 throw err;
+            req.flash('authorGoogle','google');
               return done(null, newUser);
             });
           }

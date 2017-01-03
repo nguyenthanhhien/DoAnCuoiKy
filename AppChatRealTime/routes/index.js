@@ -2,57 +2,55 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
-router.get('/login', function(req, res, next) {
-  res.render('login', {layout:false});
-});
-
-//router.get('/signup', function(req, res) {
-//  res.render('signup.ejs', { message: req.flash('loginMessage') });
+//router.get('/', function(req, res, next) {
+//  res.render('index', { title: 'Express' });
 //});
 
-router.get('/profile', isLoggedIn, function(req, res) {
-  res.render('profile', { user: req.user });
+router.get('/login', function(req, res, next) {
+  res.render('login', {layout:false, message: req.flash('loginMessage')});
+});
+
+
+router.get('/', isLoggedIn, function(req, res) {
+  res.render('profile', { user: req.user});
 });
 
 router.get('/logout', function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.redirect('/login');
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/profile',
+  successRedirect: '/login',
   failureRedirect: '/login',
   failureFlash: true,
 }));
 
 router.post('/login', passport.authenticate('local-login', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true,
-}));
+  }));
+           
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
 
 router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
 }));
 
 router.get('/auth/twitter', passport.authenticate('twitter'));
 
 router.get('/auth/twitter/callback', passport.authenticate('twitter', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
 }));
 
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
 }));
 

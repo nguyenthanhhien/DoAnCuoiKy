@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
+var flash = require('connect-flash');
 
 var port = process.env.PORT || 3000;
 
@@ -12,7 +13,6 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 var mongoose = require('mongoose');
-var flash = require('connect-flash');
 var session = require('express-session');
 
 var routes = require('./routes/index');
@@ -49,6 +49,13 @@ app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
+});
+
+// Global Vars
+app.use(function (req, res, next) {
+  res.locals.messagelogin = req.flash('messagelogin');
+  res.locals.user = req.user || null;
+  next();
 });
 
 if (app.get('env') === 'development') {

@@ -41,3 +41,22 @@ $('.tab a').on('click', function (e) {
   $(target).fadeIn(600);
   
 });
+
+//var app = angular.module('myApp', []);
+//app.controller('myCtrl', function($scope, $http){
+//    $scope.name = "Hien";
+//    $scope.SignUpAccount = function(){
+//        console.log($scope.newaccount);
+//        $http.post('/signup',$scope.newaccount).then(function(response){
+//           console.log(response.data);
+//            alert("Đăng ký thành công!")
+//        });
+//    };
+//    
+//    $scope.LogInAccount = function(){
+//        console.log($scope.account);
+//        $http.post('/login',$scope.account).then(function(response){
+//           console.log(response.status);
+//        });
+//    };
+//});
