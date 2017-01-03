@@ -1,6 +1,8 @@
 var express = require('express');
 var passport = require('passport');
 var router = express.Router();
+var multer= require('multer');
+var upload= multer({dest:'public/img/'})
 
 //router.get('/', function(req, res, next) {
 //  res.render('index', { title: 'Express' });
@@ -10,6 +12,11 @@ router.get('/login', function(req, res, next) {
   res.render('login', {layout:false, message: req.flash('loginMessage'),messagesignup: req.flash('signupMessage')});
 });
 
+router.post('/profile',upload.any(), function(req, res, next)
+  {
+    console.log("test ham");
+    res.send(req.files);
+  });
 
 router.get('/', isLoggedIn, function(req, res) {
   res.render('profile', { user: req.user});
@@ -32,6 +39,7 @@ router.post('/login', passport.authenticate('local-login', {
   failureRedirect: '/login',
   failureFlash: true,
   }));
+
            
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));

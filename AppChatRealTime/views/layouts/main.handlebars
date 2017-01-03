@@ -42,7 +42,12 @@
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         <a href="" data-toggle="dropdown">
-                            <img class="profile-pic animated" src="./img/avatar.jpg" ng-click="changeavatar" alt="">
+                        <div method="post" action = "/profile" enctype="multipart/form-data"><img class="avatar-img" id="image" src="{{user.local.avatar}}" alt=""></div>
+        <div>
+            <input accept="image/*" type="file" id="upload" name="upload" onchange="readURL(this);"style="visibility: hidden;" />
+            <a href="" onclick="changePicture(); return false">Change Picture</a>
+        </div>
+                           <!--  <img class="profile-pic animated" src="./img/avatar.jpg" ng-click="changeavatar" alt=""> -->
                         </a>
     {{#if user.local.name}}
                  <h4 class="m-0">{{user.local.name}}</h4>
@@ -333,3 +338,26 @@
         <!-- All JS functions -->
     </body>
 </html>
+
+<script>
+        function changePicture(){
+            $('#upload').click();
+        }
+        function readURL(input)
+        {
+            if (input.files && input.files[0])
+            {
+                var reader = new FileReader();
+                reader.onload = function (e)
+                {
+                    $('#image')
+                    .attr('src',e.target.result);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+
+    </script>

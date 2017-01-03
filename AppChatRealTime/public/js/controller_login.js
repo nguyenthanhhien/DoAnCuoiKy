@@ -39,24 +39,19 @@ $('.tab a').on('click', function (e) {
   $('.tab-content > div').not(target).hide();
   
   $(target).fadeIn(600);
+
+
   
 });
 
-//var app = angular.module('myApp', []);
-//app.controller('myCtrl', function($scope, $http){
-//    $scope.name = "Hien";
-//    $scope.SignUpAccount = function(){
-//        console.log($scope.newaccount);
-//        $http.post('/signup',$scope.newaccount).then(function(response){
-//           console.log(response.data);
-//            alert("Đăng ký thành công!")
-//        });
-//    };
-//    
-//    $scope.LogInAccount = function(){
-//        console.log($scope.account);
-//        $http.post('/login',$scope.account).then(function(response){
-//           console.log(response.status);
-//        });
-//    };
-//});
+// var app = angular.module('myApp', []);
+// app.controller('myCtrl', function($scope, $http){
+//    function changePicture() {
+//         //open the open file dialog
+//         document.getElementById('upload').click();
+//         var link = document.getElementById('upload').url;
+//         //change picture
+//         var img = document.getElementById("image");
+//         img.src = link;
+//     }
+// });
