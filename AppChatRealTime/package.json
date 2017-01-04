@@ -25,4 +25,16 @@
     "passport-twitter": "^1.0.3",
     "serve-favicon": "~2.3.0"
   }
+  {
+  "name": "file_upload",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "4.13.3",
+    "multer": "1.1.0"
+  },
+  "devDependencies": {
+    "should": "~7.1.0",
+    "mocha": "~2.3.3",
+    "supertest": "~1.1.0"
+  }
 }

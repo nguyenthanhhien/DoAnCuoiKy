@@ -42,13 +42,27 @@
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         <a href="" data-toggle="dropdown">
-                        <div method="post" action = "/profile" enctype="multipart/form-data"><img class="avatar-img" id="image" src="{{user.local.avatar}}" alt=""></div>
-        <div>
-            <input accept="image/*" type="file" id="upload" name="upload" onchange="readURL(this);"style="visibility: hidden;" />
+                        <form id        =  "uploadForm"
+     enctype   =  "multipart/form-data"
+     action    =  "/api/photo"
+     method    =  "post"
+>
+<div>
+                        <img class="avatar-img" id="image" src="{{user.local.avatar}}" alt="" onclick="changePicture(); return false">
+                        </div>
+
+<input accept="image/*" type="file" id="upload" name="userPhoto" onchange="readURL(this);"style="visibility: hidden;" />
+<!-- <input type="file" name="userPhoto" /> -->
+<input type="submit" value="Upload Image" name="submit">
+</form>
+                        
+                <div>
+            <!-- <input accept="image/*" type="file" id="upload" name="upload" onchange="readURL(this);"style="visibility: hidden;" />
             <a href="" onclick="changePicture(); return false">Change Picture</a>
-        </div>
+        </div> -->
                            <!--  <img class="profile-pic animated" src="./img/avatar.jpg" ng-click="changeavatar" alt=""> -->
                         </a>
+                        
     {{#if user.local.name}}
                  <h4 class="m-0">{{user.local.name}}</h4>
     {{else}}
@@ -357,6 +371,27 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        $(document).ready(function() {
+
+     $('#uploadForm').submit(function() {
+         $("#status").empty().text("File is uploading...");
+
+        $(this).ajaxSubmit({
+
+            error: function(xhr) {
+                    status('Error: ' + xhr.status);
+            },
+
+            success: function(response) {
+                    console.log(response)
+                    $("#status").empty().text(response);
+            }
+    });
+
+    return false;
+    });    
+});
 
 
 
