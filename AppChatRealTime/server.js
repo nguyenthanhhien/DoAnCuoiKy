@@ -7,7 +7,10 @@ var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var flash = require('connect-flash');
 
-var port = process.env.PORT || 3000;
+var http = require('http');
+var io = require('socket.io');
+
+//var port = process.env.PORT || 3000;
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -22,6 +25,8 @@ var configDB = require('./config/database.js');
 mongoose.connect(configDB.url);
 
 var app = express();
+app.set('port', process.env.PORT || 3000);
+
 
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -44,6 +49,10 @@ require('./config/passport')(passport);
 
 app.use('/', routes);
 app.use('/users', users);
+
+var server = http.createServer(app);
+io = io.listen(server);
+require('./config/socket')(io);
 
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -76,10 +85,10 @@ app.use(function(err, req, res, next) {
   });
 });
 
-app.set('port', (process.env.PORT || 3000));
 
-app.listen(app.get('port'), function(){
-	console.log('Server started on port '+app.get('port'));
+//app.listen(port);
+server.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
 
 module.exports = app;

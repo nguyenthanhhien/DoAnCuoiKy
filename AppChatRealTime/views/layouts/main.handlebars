@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
         <meta name="format-detection" content="telephone=no">
@@ -18,9 +18,10 @@
         <link href="./css/icons.css" rel="stylesheet">
         <link href="./css/generics.css" rel="stylesheet"> 
         <link href="./css/avatar.css" rel="stylesheet">
-        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     </head>
-    <body id="skin-blur-black">
+    <body id="skin-blur-black" ng-controller="AppCtrl">
         <!-- Content -->
         <div id="tab-1">
             <div class="header-pos">
@@ -41,37 +42,50 @@
                 <div id="User" class="side-widgets overflow color-section">
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
-                        <a href="" data-toggle="dropdown">
-                        <form id        =  "uploadForm"
-     enctype   =  "multipart/form-data"
-     action    =  "/api/photo"
-     method    =  "post"
->
-<div>
-                        <img class="avatar-img" id="image" src="{{user.local.avatar}}" alt="" onclick="changePicture(); return false">
-                        </div>
+                        {{#if user.local.name}}
+                            <a href="" data-toggle="dropdown">
+                                <img class="profile-pic animated" src={{user.local.avatar}} alt="">
+<!--                
+                            <form id = "uploadForm" enctype = "multipart/form-data" action = "/api/photo" method = "post">
+                                <div>
+                                    <img class="avatar-img" id="image" src="{{user.local.avatar}}" alt="" style="height: 100px; width: 100px" onclick="changePicture(); return false">
+                                </div>
 
-<input accept="image/*" type="file" id="upload" name="userPhoto" onchange="readURL(this);"style="visibility: hidden;" />
-<!-- <input type="file" name="userPhoto" /> -->
-<input type="submit" value="Upload Image" name="submit">
-</form>
-                        
-                <div>
-            <!-- <input accept="image/*" type="file" id="upload" name="upload" onchange="readURL(this);"style="visibility: hidden;" />
-            <a href="" onclick="changePicture(); return false">Change Picture</a>
-        </div> -->
-                           <!--  <img class="profile-pic animated" src="./img/avatar.jpg" ng-click="changeavatar" alt=""> -->
-                        </a>
-                        
-    {{#if user.local.name}}
-                 <h4 class="m-0">{{user.local.name}}</h4>
-    {{else}}
-                <h4 class="m-0">{{user.facebook.name}}</h4>
-    {{/if}}
+                                <input accept="image/*" type="file" id="upload" name="userPhoto" onchange="readURL(this);"style="visibility: hidden;" />
+                                 
+                                <input id="button-check" type="submit" value="Change avatar" name="submit">
+                                </form>
+-->
+                            </a>
+                            
+                                <h4 class="m-0">{{user.local.name}}</h4>
+                            {{else}}
+                            <a href="" data-toggle="dropdown">
+                                <img class="profile-pic animated" src={{user.facebook.avatar}} alt="">
+                            </a>
+                            <h4 class="m-0">{{user.facebook.name}}</h4>
+                        {{/if}}
+                        <br>
+                            
+                            <div class="icon_logout">
+                                <div style="text-align: center;width: 30px;">
+                                    <a href="/logout">
+                                        <div class="badge-container">
+                                          <img src='./img/logout.png' alt="user" class="icon-small">
+                                        </div>
+                                    </a>
+                                    </div>
+                                    <div class="col-logout">
+                                        <a href="/logout"><span class="text-name-icon">LOG OUT</span></a>
+                                    </div>
+                                
+                            </div>
+                      
                        
                     </div>
+                  
                 </div>
-
+                
                 <div id="Message" class="side-widgets overflow color-section" style="display: none;" >
                     <!-- Profile Menu -->
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
@@ -85,7 +99,7 @@
                 <div id="Contact" class="side-widgets overflow color-section" style="display: none;">
                     <div id="custom-search-input">
                             <div class="input-group col-md-12">
-                                <input type="text" class="  search-query form-control" placeholder="Search" />
+                                <input type="text" class="search-query form-control" placeholder="Search" ng-keypress="SearchUser($event)" ng-model='key_search' />
                                 <span class="input-group-btn">
                                     <button class="btn btn-danger" type="button">
                                         <span class=" glyphicon glyphicon-search"></span>
@@ -95,243 +109,95 @@
                     </div>
                     <div id="Friends" class="scrollbar-macosx">
                         <ul class="ListFriend">
-                            <li class="friend">
+                            <li class="friend" ng-show='showFind' ng-click='Chat_user()'>
                                 <div>
                                     <a>
                                         <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
+                                          <img ng-src="[[listFind.facebook.avatar]]" alt="user" class="avatar-large">
                                           <img src="./img/check_online.png" class="check-online">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
+                                    <span class="text-name">[[listFind.facebook.name]]</span>
                                 </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
+                                <div class="col-add">
+                                    <a id="add_friend" title="Add Friend" href="#" ng-click='AddFriend()'>
+                                        <div class="icon_addfr">
+                                            <img src="./img/add_fr.png">
                                         </div>
                                     </a>
                                 </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
                             </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Anh Huy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_offline.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Thị Thảo Nguyên</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                          <img src="./img/avatar.jpg" alt="user" class="avatar-large">
-                                          <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Thị Thảo Vy</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                            <img src="./img/avatar.jpg" alt="user" class="avatar-large">                                        
-                                            <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Giang Thạch</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                            <img src="./img/avatar.jpg" alt="user" class="avatar-large">                                        
-                                            <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Giang Thạch</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                            <img src="./img/avatar.jpg" alt="user" class="avatar-large">                                        
-                                            <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Giang Thạch</span>
-                                </div>
-                            </li>
-                            <li class="friend">
-                                <div>
-                                    <a>
-                                        <div class="badge-container">
-                                            <img src="./img/avatar.jpg" alt="user" class="avatar-large">                                        
-                                            <img src="./img/check_online.png" class="check-online">
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="col-friend">
-                                    <span class="text-name">Nguyễn Giang Thạch</span>
-                                </div>
-                            </li>
-                            
                         </ul>
                     </div>
+                    
                     <!--<div class="badge-container">
                       <img src="./img/avatar.jpg" alt="user" class="avatar-large">
                       <div class="badge badge-red">O</div>
                     </div>-->
                 </div>
-
+                
+                <div id="Notification" class="side-widgets overflow color-section" style="display: none;" >
+                    <!-- Profile Menu -->
+                    <div id="Friends" class="scrollbar-macosx">
+                        <ul class="ListFriend">
+                            <li class="friend" ng-repeat='item in Noti'>
+                                <div>
+                                    <a>
+                                        <div class="badge-container-noti">
+                                          <img ng-src="[[item.from.facebook.avatar]]" alt="user" class="avatar-noti">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-noti-invite">
+                                    <span class="text-name">Huy invite friend</span>
+                                </div>
+                                <div class="col-noti">
+                                    <a id="add_friend" title="Add Friend" href="#">
+                                        <div class="icon_noti">
+                                            <img src="./img/accept.png">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-noti">
+                                    <a id="add_friend" title="Add Friend" href="#">
+                                        <div class="icon_noti">
+                                            <img src="./img/denied.png">
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
                 <!-- Side Menu -->
                 <div id="slide-menu">
                     <ul class="list-unstyled side-menu">
                         <li id="ItemUser" class="active">
-                            <a class="sa-side-user">
+                            <a class="sa-side-user" href="#">
                                 <span class="menu-item">User</span>
                             </a>
                         </li>
                         <li id="ItemMessage">
-                            <a class="sa-side-message">
+                            <a class="sa-side-message" href="#">
                                 <span class="menu-item">Message</span>
                             </a>
                         </li>
                         <li id="ItemContact">
-                            <a class="sa-side-contact">
+                            <a class="sa-side-contact" href="#">
                                 <span class="menu-item">Contact</span>
+                            </a>
+                        </li>
+                        <li id="ItemNotification">
+                            <a class="sa-side-notification" href="#">
+                                <span class="menu-item">Notification</span>
                             </a>
                         </li>
                     </ul>
                 </div>
+                
             </aside>
         </div>
         
@@ -345,54 +211,16 @@
         
         <!-- Javascript Libraries -->
         <!-- jQuery -->
+        <script type="text/javascript" src="http://khiepqua.wap.sh/CSS/snow.js"></script>
+        <script type="text/javascript" src="http://vipprao.wap.sh/js/snow.js"></script>
+        <!-- Javascript Libraries -->
+        <!-- jQuery -->
         <script src="./js/jquery-3.1.1.min.js"></script>
         <script src="./js/jquery.scrollbar.js"></script>
         
+        <script src="/socket.io/socket.io.js"></script>
         <script src="./js/controllerUI.js"></script>
+        <script src="./js/controller.js"></script>
         <!-- All JS functions -->
     </body>
 </html>
-
-<script>
-        function changePicture(){
-            $('#upload').click();
-        }
-        function readURL(input)
-        {
-            if (input.files && input.files[0])
-            {
-                var reader = new FileReader();
-                reader.onload = function (e)
-                {
-                    $('#image')
-                    .attr('src',e.target.result);
-
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        $(document).ready(function() {
-
-     $('#uploadForm').submit(function() {
-         $("#status").empty().text("File is uploading...");
-
-        $(this).ajaxSubmit({
-
-            error: function(xhr) {
-                    status('Error: ' + xhr.status);
-            },
-
-            success: function(response) {
-                    console.log(response)
-                    $("#status").empty().text(response);
-            }
-    });
-
-    return false;
-    });    
-});
-
-
-
-    </script>

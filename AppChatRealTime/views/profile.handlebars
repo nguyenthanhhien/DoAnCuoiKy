@@ -1,19 +1,46 @@
+<section id="content" class="container" style="height:100%;background:url(./img/background.jpg)no-repeat fixed center; background-position:right top;opacity: 0.8" ng-show='ShowMain'>
+    <div id="box" >
+        <div style="text-align: center; ">
+            {{#if user.local.name}}
+                <h5 style="font-family:Freestyle Script;font-size: 290%;color:#222222;font-weight: bold;">Welcome to {{user.local.name}}</h5>
+            {{else}}
+                <h5 style="font-family:Freestyle Script;font-size: 290%;">Welcome to {{user.facebook.name}}</h5>
+            {{/if}}
+        </div>
+    <div>
+        {{#if user.local.name}}
+            <img id="avatar" style="width:500%" src="{{user.local.avatar}}" alt="" class="avatar-large">
+        {{else}}
+            <img id="avatar" style="width:500%" src="{{user.facebook.avatar}}" alt="" class="avatar-large">
+        {{/if}}
+    </div>
+        <div style="text-align:center; font-family:Freestyle Script; font-size: 220%; font-weight: bold;color: #000044">Select a conversation to start chatting or go to contacts to see who is available
+        </div>
+    </div> 
+</section>   
+
+
 <!-- Section chat box -->
-<section id="content" class="container" style="height: 100%;">
+<section id="content" class="container" style="height: 100%;" ng-show='ShowChat'>
     <div class="logo-friend-header">
         <div style="height: 70px; line-height: 70px;">
-
-            <div class="badge-container item-left">
-              <img src={{user.facebook.photos}} alt="user" class="avatar-large">
-              <img src="./img/check_offline.png" class="check-online">
-            </div>
-            <div class="margin-name item-left">
-                {{#if user.local.name}}
-                <h3>{{user.local.name}}</h3>
-    {{else}}
-                <h3>{{user.facebook.name}}</h3>
-    {{/if}}
-            </div>
+            {{#if user.local.name}}
+                <div class="badge-container item-left">
+                  <img src='{{user.local.avatar}}' class="avatar-large">
+                  <img src="./img/check_offline.png" class="check-online">
+                </div>
+                <div class="margin-name item-left">
+                    <h3>{{user.local.name}}</h3>
+                </div>
+            {{else}}
+                <div class="badge-container item-left">
+                  <img src='{{user.facebook.avatar}}' class="avatar-large">
+                  <img src="./img/check_offline.png" class="check-online">
+                </div>
+                <div class="margin-name item-left">
+                    <h3>{{user.facebook.name}}</h3>
+                </div>
+            {{/if}}
             <div class="item-right">
                 <img src="./img/phone.png" style="margin-right: 12px;">
                 <img src="./img/camera.png">
@@ -23,156 +50,32 @@
     <div class="chat-box" style="height: 100%;">
         <div id="section-chat" class="chat-height scroll-y scrollbar-macosx">
             <ol class="">
-                <li class="section-item">
+                <li class="section-item" ng-repeat='message in messages' ng-class="{true: 'me', false: ''}[message.from._id == '{{user._id}}']">
                     <div class="avatar avatar-small">
-                        <img class="avatar-img" src="{{user.local.avatar}}">
+                        <img class="avatar-img" src="[[message.from.facebook.avatar]]">
                     </div>
-                    <div>
+                    <div class="width-textchat">
                         <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello worldHello worldHello worldHello worldHello worldHello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello worldHello worldHello worldHello worldHello worldHello world</span>
+                            <span>[[message.content]]</span>
                         </div>
                     </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello worldHello worldHello worldHello worldHello worldHello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world  Hello world Hello worldHello worldHello worldHello world</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg"f>
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
-                </li>
-                <li class="section-item me">
-                    <div class="avatar avatar-small">
-                        <img class="avatar-img" src="./img/avatar.jpg">
-                    </div>
-                    <div>
-                        <div class="section-item-message border-right border-left">
-                            <span>worldHello world Hello world</span>
-                        </div>
-                        <div class="section-item-message border-right border-left">
-                            <span>Hello world Hello world Hello</span>
-                        </div>
-                    </div>
-
                 </li>
             </ol>
-
         </div>
     </div>    
     <div class="width-text">
-        <input class="textarea" type="text" placeholder="Type here ...">
+        <input class="textarea" type="text" placeholder="Type here ..." ng-model="Text_chat" ng-keypress="KeyChat($event)">
         <div class="func">
-            <img class="icon_func" src="./img/smile.png">
-            <img class="icon_func" src="./img/image.png">
-            <img class="icon_func" src="./img/send.png">
+            <a href="#" title="Icon">
+                <img class="icon_func" src="./img/smile.png">
+            </a>
+            <a href="#" title="Image">
+                <img class="icon_func" src="./img/image.png">
+            </a>
+            <a href="#" title="Send">
+                <img class="icon_func" src="./img/send.png" ng-click='Send_msg()'>
+            </a>
         </div>
     </div>
-</section>   
+</section>
+

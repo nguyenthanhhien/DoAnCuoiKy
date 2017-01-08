@@ -6,7 +6,7 @@ var userSchema = mongoose.Schema({
     name: String,
     email: String,
     password: String,
-    avatar: String,
+    avatar: String
   },
   facebook: {
     id: String,
@@ -14,6 +14,7 @@ var userSchema = mongoose.Schema({
     email: String,
     name: String,
     username: String,
+    avatar: String
   },
   twitter: {
     id: String,
@@ -27,6 +28,9 @@ var userSchema = mongoose.Schema({
     email: String,
     name: String,
   },
+  friends:[{
+      _id: String,
+  }]
 });
 
 userSchema.methods.generateHash = function(password) {

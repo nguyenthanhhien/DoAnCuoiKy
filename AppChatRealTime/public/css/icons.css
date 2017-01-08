@@ -172,3 +172,6 @@ only screen and (                min-resolution: 1.25dppx) {
     .tile-config > .tile-menu { background-image: url(../img/icon/tile-actions@2x.png); background-size: 13px 3px; }
     .message-search:not(:focus) { background-image: url(../img/icon/search@2x.png); background-size: 25px 25px; }
 }
+.sa-side-notification {
+    background-image: url(../img/notification.png); 
+}

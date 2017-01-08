@@ -43,13 +43,14 @@
   border-radius: 50%;
 }
 .friend {
+    padding-left: 20px;
     display: flex;
     height: 64px;
     position: relative;
 }
 
 .ListFriend {
-    padding-left: 20px;
+    padding-left: 0px;
 }
 
 #Friends {
@@ -58,13 +59,14 @@
 }
 
 .col-friend {
+    width: calc(100% - 130px);
     padding: 10px;
     display: flex;
     flex-direction: column;
 }
 
 .text-name {
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .check-online {
