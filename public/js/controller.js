@@ -10,7 +10,7 @@ app.controller('AppCtrl',function($scope,$http,$timeout){
     $scope.ShowMain = true;
     $scope.ShowChat = false;
 
-    var socket = io.connect('http://localhost:3000');
+    var socket = io.connect('https://my-app-chat.herokuapp.com');
     $scope.showFind = false;
     var user;
     $http.get('/info').then(function(response){
