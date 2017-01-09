@@ -111,11 +111,20 @@ router.get('/auth/google/callback', passport.authenticate('google', {
 
 router.get('/search/:Username',isLoggedIn,function(req,res){
    var name = req.params.Username;
+    var find = false;
     User.findOne({'facebook.name':name},function(err, user) {
         if (err)
             return done(err);
-        
-        res.json(user);
+        if (user)
+            res.json(user);
+            
+    })
+    
+    User.findOne({'local.name':name},function(err, user) {
+        if (err)
+            return done(err);
+        if (user)
+            res.json(user);
     })
 });
 
@@ -126,6 +135,13 @@ router.post('/addfriend',isLoggedIn,function(req,res){
        user.friends.push(fr._id);
         user.save();
         res.json(fr._id);
+    });
+});
+
+router.get('/notification', isLoggedIn, function(req,res){
+    User.findOne({'_id': req.user._id}, function(err,user){
+        var data = user.notification;
+        res.json(data);
     });
 });
 

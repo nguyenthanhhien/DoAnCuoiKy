@@ -30,6 +30,11 @@ var userSchema = mongoose.Schema({
   },
   friends:[{
       _id: String,
+  }],
+  notification:[{
+      _id: String,
+      name: String,
+      avatar: String
   }]
 });
 

@@ -44,7 +44,7 @@
                     <div class="text-center s-widget m-b-25 dropdown" id="profile-menu">
                         {{#if user.local.name}}
                             <a href="" data-toggle="dropdown">
-                                <img class="profile-pic animated" src={{user.local.avatar}} alt="">
+                                <img style = "height: 120px;" class="profile-pic animated" src='{{user.local.avatar}}'>
 <!--                
                             <form id = "uploadForm" enctype = "multipart/form-data" action = "/api/photo" method = "post">
                                 <div>
@@ -61,7 +61,7 @@
                                 <h4 class="m-0">{{user.local.name}}</h4>
                             {{else}}
                             <a href="" data-toggle="dropdown">
-                                <img class="profile-pic animated" src={{user.facebook.avatar}} alt="">
+                                <img class="profile-pic animated" src='{{user.facebook.avatar}}' alt="">
                             </a>
                             <h4 class="m-0">{{user.facebook.name}}</h4>
                         {{/if}}
@@ -113,13 +113,13 @@
                                 <div>
                                     <a>
                                         <div class="badge-container">
-                                          <img ng-src="[[listFind.facebook.avatar]]" alt="user" class="avatar-large">
+                                          <img ng-src="[[listFind.facebook.avatar || listFind.local.avatar]]" alt="user" class="avatar-medium">
                                           <img src="./img/check_online.png" class="check-online">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-friend">
-                                    <span class="text-name">[[listFind.facebook.name]]</span>
+                                    <span class="text-name">[[listFind.facebook.name || listFind.local.name]]</span>
                                 </div>
                                 <div class="col-add">
                                     <a id="add_friend" title="Add Friend" href="#" ng-click='AddFriend()'>
@@ -146,12 +146,12 @@
                                 <div>
                                     <a>
                                         <div class="badge-container-noti">
-                                          <img ng-src="[[item.from.facebook.avatar]]" alt="user" class="avatar-noti">
+                                          <img ng-src="[[item.avatar]]" alt="user" class="avatar-noti">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-noti-invite">
-                                    <span class="text-name">Huy invite friend</span>
+                                    <span class="text-name">[[item.name]] invite friend</span>
                                 </div>
                                 <div class="col-noti">
                                     <a id="add_friend" title="Add Friend" href="#">
@@ -191,7 +191,7 @@
                             </a>
                         </li>
                         <li id="ItemNotification">
-                            <a class="sa-side-notification" href="#">
+                            <a class="sa-side-notification" href="#" ng-click='Click_Noti()'>
                                 <span class="menu-item">Notification</span>
                             </a>
                         </li>

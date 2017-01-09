@@ -26,7 +26,7 @@
         <div style="height: 70px; line-height: 70px;">
             {{#if user.local.name}}
                 <div class="badge-container item-left">
-                  <img src='{{user.local.avatar}}' class="avatar-large">
+                  <img src='{{user.local.avatar}}' class="avatar-medium">
                   <img src="./img/check_offline.png" class="check-online">
                 </div>
                 <div class="margin-name item-left">
@@ -34,7 +34,7 @@
                 </div>
             {{else}}
                 <div class="badge-container item-left">
-                  <img src='{{user.facebook.avatar}}' class="avatar-large">
+                  <img src='{{user.facebook.avatar}}' class="avatar-medium">
                   <img src="./img/check_offline.png" class="check-online">
                 </div>
                 <div class="margin-name item-left">
@@ -52,7 +52,7 @@
             <ol class="">
                 <li class="section-item" ng-repeat='message in messages' ng-class="{true: 'me', false: ''}[message.from._id == '{{user._id}}']">
                     <div class="avatar avatar-small">
-                        <img class="avatar-img" src="[[message.from.facebook.avatar]]">
+                        <img class="avatar-img" src="[[message.from.facebook.avatar || message.from.local.avatar]]">
                     </div>
                     <div class="width-textchat">
                         <div class="section-item-message border-right border-left">
