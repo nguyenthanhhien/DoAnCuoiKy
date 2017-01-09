@@ -4,7 +4,7 @@ var multer= require('multer');
 var User = require('../models/user');
 var router = express.Router();
 var multer= require('multer');
-
+var Message = require('../models/message');
 
 
 var link = "";
@@ -31,7 +31,6 @@ router.get('/main',function(req,res){
 });
 
 router.post('/api/photo',function(req,res){
-    console.log(req.user);
     upload(req,res,function(err) {
         if(err) {
             return res.end("Error uploading file.");
@@ -46,20 +45,13 @@ router.post('/api/photo',function(req,res){
     });
 
 });
-// router.listen(3000,function(){
-//     console.log("Working on port 3000");
-// });
+
 
 
 router.get('/login', function(req, res, next) {
   res.render('login', {layout:false, message: req.flash('loginMessage'),messagesignup: req.flash('signupMessage')});
 });
 
-// router.post('/profile',upload.any(), function(req, res, next)
-//   {
-//     console.log("test ham");
-//     res.send(req.files);
-//   });
 
 router.get('/', isLoggedIn, function(req, res) {
   res.render('profile', { user: req.user });
@@ -131,12 +123,36 @@ router.get('/search/:Username',isLoggedIn,function(req,res){
 router.post('/addfriend',isLoggedIn,function(req,res){
     var user = req.user, fr = req.body;
     User.findOne({'_id': user.id},function(err,user){
-        console.log('UPDATE');
        user.friends.push(fr._id);
         user.save();
         res.json(fr._id);
     });
 });
+var test = {};
+var AllFr = [];
+router.get('/allfriends',isLoggedIn, function(req,res){
+    
+    User.findOne({'_id':req.user._id}, function(err,user){
+        var Friends = user.friends;
+        
+        for (var i = 0; i < Friends.length; i++)
+            {
+                User.findOne({'_id': Friends[i]._id}).exec(function(err,user){
+                    AllFr.push(user);
+                    if (Friends.length == AllFr.length)
+                        {
+                            res.json(AllFr);
+                            AllFr = [];
+                        }
+                        
+                })
+                
+                    
+            }
+            
+    });
+});
+
 
 router.get('/notification', isLoggedIn, function(req,res){
     User.findOne({'_id': req.user._id}, function(err,user){
@@ -144,6 +160,26 @@ router.get('/notification', isLoggedIn, function(req,res){
         res.json(data);
     });
 });
+router.get('/message/:_id', isLoggedIn, function(req,res){
+    var id = req.params._id;
+    Message.findOne({'user_1': req.user._id, 'user_2': id}, function(err,msg){
+        if(msg)
+        {
+            var data = msg.mes;
+            res.json(data);
+        }
+        
+    });
+    Message.findOne({'user_1': id, 'user_2': req.user._id}, function(err,msg){
+        if(msg)
+        {
+            var data = msg.mes;
+            res.json(data);
+        }
+
+    });
+});
+
 
 module.exports = router;
 

@@ -16,6 +16,7 @@ app.controller('AppCtrl',function($scope,$http,$timeout){
     $http.get('/info').then(function(response){
         user = response.data;
         socket.emit("add-user", {"_id": user._id});
+        $scope.me = user;
     });
     
     
@@ -29,41 +30,50 @@ app.controller('AppCtrl',function($scope,$http,$timeout){
                         {
                             $scope.listFind = response.data;
                             $scope.showFind = true;
-                            //console.log(Find_User);
-                            
                         }
                     
                 });
             }
-
+   
+    }
+    
+     $scope.messages = [];
+    $scope.Noti = [];
+    $scope.AllFriends = [];
+    
+    $scope.Chat_user = function(friend){
+        $scope.MSG = [];
+        $scope.messages = [];
+        $scope.ShowMain = false;
+        $scope.ShowChat = true;
+        var fr = friend[0][0];
+        $scope.Header_Friend = fr;
+        console.log($scope.Header_Friend._id);
+        $http.get('/message/' + $scope.Header_Friend._id).then(function(response){
+           console.log(response.data); 
+            $scope.MSG = response.data;
+            SetTimeout();
+        });
+        console.log($scope.MSG);
         
     }
     
-    $scope.Chat_user = function(){
-        $scope.ShowMain = false;
-        $scope.ShowChat = true;
-    }
-    
-    $scope.messages = [];
-    $scope.Noti = [];
+   
     //Chat 
     function Send(){
         socket.emit("private-message", {
             "from": user,
-            "to": $scope.listFind,
+            "to": $scope.Header_Friend,
             "content": $scope.Text_chat
         });
         var message = {
             "from": user,
-            "to": $scope.listFind,
+            "to": $scope.Header_Friend,
             "content": $scope.Text_chat
         }
         $scope.messages.push(message);
         $scope.Text_chat = '';
-        $timeout(function() {
-          var scroller = document.getElementById("section-chat");
-          scroller.scrollTop = scroller.scrollHeight;
-        }, 0, false);
+        SetTimeout();
     }
     $scope.Send_msg = function(){
         Send();
@@ -77,9 +87,11 @@ app.controller('AppCtrl',function($scope,$http,$timeout){
     }
     
     $scope.AddFriend = function(){
+        $scope.test = "request friend";
         socket.emit("add-friend",{
             "from": user,
-            "to": $scope.listFind._id
+            "to": $scope.listFind._id,
+            "classify": $scope.test,
         });
     }
     
@@ -89,23 +101,55 @@ app.controller('AppCtrl',function($scope,$http,$timeout){
             $scope.Noti = data;
         });
     }
-    socket.on("add-message", function(data){
-        $scope.$apply(function() {
-            $scope.messages.push(data);
+    
+    $scope.Click_Contact = function(){
+        $http.get('/allfriends').then(function(response){
+           $scope.AllFriends = response.data;
         });
-        $timeout(function() {
-          var scroller = document.getElementById("section-chat");
-          scroller.scrollTop = scroller.scrollHeight;
-        }, 0, false);        
+    }
+    
+    $scope.Accept_Friend = function(item){
+        socket.emit("accept-friend",{
+           "from": user,
+            "to": item[0][0],
+            "classify": "accept friend request"
+        });
+    }
+    
+    $scope.Denied_Friend = function(item){
+        socket.emit("denied-friend",{
+           "from": user,
+            "to": item[0][0],
+            "classify": "denied friend request"
+        });
+    }
+    
+    
+    socket.on("add-message", function(data){
+         if ($scope.Header_Friend._id == data.from._id)
+            {
+                $scope.$apply(function() {
+                    $scope.messages.push(data);
+                });
+            }
+        
+        
+        SetTimeout();
      });
     
     socket.on('recive-notification', function(data){
         $scope.$apply(function() {
-            console.log(data);
             $scope.Noti.push(data);
         });
         
     });
+    
+    function SetTimeout(){
+        $timeout(function() {
+          var scroller = document.getElementById("section-chat");
+          scroller.scrollTop = scroller.scrollHeight;
+        }, 0, false);
+    }
     
     
     

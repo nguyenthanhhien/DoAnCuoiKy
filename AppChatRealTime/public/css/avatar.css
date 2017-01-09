@@ -46,7 +46,7 @@
 .friend {
     padding-left: 20px;
     display: flex;
-    height: 64px;
+    height: 68px;
     position: relative;
 }
 
@@ -55,8 +55,10 @@
 }
 
 #Friends {
+/*
     height: calc (100% - 90px);
     margin-top: 20px;
+*/
 }
 
 .col-friend {
@@ -507,4 +509,12 @@ input.textarea {
     height: 60px;
     width: 60px;
     border-radius: 50%;
+}
+
+.result_search {
+    margin: 10px 0px;
+}
+
+.result_search:hover {
+    background-color: #333;
 }

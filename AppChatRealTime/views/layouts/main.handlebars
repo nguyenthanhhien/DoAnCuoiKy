@@ -107,9 +107,8 @@
                                 </span>
                             </div>
                     </div>
-                    <div id="Friends" class="scrollbar-macosx">
-                        <ul class="ListFriend">
-                            <li class="friend" ng-show='showFind' ng-click='Chat_user()'>
+                    
+                    <div class="friend result_search" ng-show='showFind'>
                                 <div>
                                     <a>
                                         <div class="badge-container">
@@ -127,6 +126,25 @@
                                             <img src="./img/add_fr.png">
                                         </div>
                                     </a>
+                                </div>
+                    </div>
+                    
+                    <div class="header-allfriends">
+                        <h4>All Friends</h4>
+                    </div>
+                    <div id="Friends" class="scrollbar-macosx">
+                        <ul class="ListFriend">
+                            <li class="friend" ng-repeat='friend in AllFriends'  ng-click='Chat_user([[friend]])'>
+                                <div>
+                                    <a>
+                                        <div class="badge-container">
+                                          <img ng-src="[[friend.facebook.avatar || friend.local.avatar]]" alt="user" class="avatar-medium">
+                                          <img src="./img/check_online.png" class="check-online">
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-friend">
+                                    <span class="text-name">[[friend.facebook.name || friend.local.name]]</span>
                                 </div>
                             </li>
                         </ul>
@@ -151,17 +169,17 @@
                                     </a>
                                 </div>
                                 <div class="col-noti-invite">
-                                    <span class="text-name">[[item.name]] invite friend</span>
+                                    <span class="text-name">[[item.name]] [[item.classify]]</span>
                                 </div>
                                 <div class="col-noti">
-                                    <a id="add_friend" title="Add Friend" href="#">
+                                    <a id="add_friend" title="Add Friend" href="#" ng-click='Accept_Friend([[item._id]])'>
                                         <div class="icon_noti">
                                             <img src="./img/accept.png">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-noti">
-                                    <a id="add_friend" title="Add Friend" href="#">
+                                    <a id="add_friend" title="Add Friend" href="#" ng-click='Denied_Friend([[item._id]])'>
                                         <div class="icon_noti">
                                             <img src="./img/denied.png">
                                         </div>
@@ -186,7 +204,7 @@
                             </a>
                         </li>
                         <li id="ItemContact">
-                            <a class="sa-side-contact" href="#">
+                            <a class="sa-side-contact" href="#" ng-click='Click_Contact()'>
                                 <span class="menu-item">Contact</span>
                             </a>
                         </li>

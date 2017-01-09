@@ -1,4 +1,4 @@
-<section id="content" class="container" style="height:100%;background:url(./img/background.jpg)no-repeat fixed center; background-position:right top;opacity: 0.8" ng-show='ShowMain'>
+<section id="content" class="container" style="height:100%;background:url(./img/background.jpg)no-repeat fixed center;opacity: 0.8" ng-show='ShowMain'>
     <div id="box" >
         <div style="text-align: center; ">
             {{#if user.local.name}}
@@ -24,23 +24,14 @@
 <section id="content" class="container" style="height: 100%;" ng-show='ShowChat'>
     <div class="logo-friend-header">
         <div style="height: 70px; line-height: 70px;">
-            {{#if user.local.name}}
                 <div class="badge-container item-left">
-                  <img src='{{user.local.avatar}}' class="avatar-medium">
+                  <img src='[[Header_Friend.local.avatar || Header_Friend.facebook.avatar ]]' class="avatar-medium">
                   <img src="./img/check_offline.png" class="check-online">
                 </div>
                 <div class="margin-name item-left">
-                    <h3>{{user.local.name}}</h3>
+                    <h3>[[Header_Friend.local.name || Header_Friend.facebook.name]]</h3>
                 </div>
-            {{else}}
-                <div class="badge-container item-left">
-                  <img src='{{user.facebook.avatar}}' class="avatar-medium">
-                  <img src="./img/check_offline.png" class="check-online">
-                </div>
-                <div class="margin-name item-left">
-                    <h3>{{user.facebook.name}}</h3>
-                </div>
-            {{/if}}
+            
             <div class="item-right">
                 <img src="./img/phone.png" style="margin-right: 12px;">
                 <img src="./img/camera.png">
@@ -50,6 +41,27 @@
     <div class="chat-box" style="height: 100%;">
         <div id="section-chat" class="chat-height scroll-y scrollbar-macosx">
             <ol class="">
+                
+                <li class="section-item" ng-repeat='msg in MSG' ng-class="{true: 'me', false: ''}[msg.from_user == '{{user._id}}']">
+                    <div class="avatar avatar-small" ng-show="[[msg.from_user != me._id]]">
+                        <img class="avatar-img" src="[[Header_Friend.local.avatar || Header_Friend.facebook.avatar ]]">
+                        
+                    </div>
+                    <div class="avatar avatar-small" ng-show="[[msg.from_user == me._id]]">
+                        {{#if user.local.name}}
+                            <img class="avatar-img" src="{{user.local.avatar}}" >
+                        {{else}}
+                            <img class="avatar-img" src="{{user.facebook.avatar}}">
+                        {{/if}}
+                    </div>
+                    
+                    <div class="width-textchat">
+                        <div class="section-item-message border-right border-left">
+                            <span>[[msg.content_mes]]</span>
+                        </div>
+                    </div>
+                </li>
+                
                 <li class="section-item" ng-repeat='message in messages' ng-class="{true: 'me', false: ''}[message.from._id == '{{user._id}}']">
                     <div class="avatar avatar-small">
                         <img class="avatar-img" src="[[message.from.facebook.avatar || message.from.local.avatar]]">

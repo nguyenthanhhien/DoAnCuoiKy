@@ -29,12 +29,13 @@ var userSchema = mongoose.Schema({
     name: String,
   },
   friends:[{
-      _id: String,
+      _id: String
   }],
   notification:[{
-      _id: String,
-      name: String,
-      avatar: String
+    _id: String,
+    name: String,
+    avatar: String,
+    classify: String
   }]
 });
 

@@ -2371,3 +2371,15 @@ ul li:hover {
     display: flex;
     flex-direction: column;
 }
+
+.header-allfriends {
+    border-bottom: 4px solid white;
+    height: 30px;
+    padding-left: 20px;
+    margin: 14px 20px;
+    line-height: 30px;
+}
+
+.selected li {
+  background-color: #333;
+}
